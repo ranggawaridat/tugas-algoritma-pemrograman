@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Algoritma Pengurutan</h1>
+    <p class="text-slate-500 dark:text-slate-400">Analisis performa pengurutan pada data mahasiswa Anda.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Configuration Panel -->
+    <div class="lg:col-span-1 space-y-6">
+        <div class="glass-panel p-6 rounded-2xl">
+            <form action="/sorting/run" method="post" id="algoForm">
+                <input type="hidden" name="algo_type" value="sorting">
+
+                <h3
+                    class="text-lg font-bold text-slate-800 dark:text-white mb-4 border-b border-slate-200 dark:border-slate-700 pb-2">
+                    Konfigurasi</h3>
+
+                <div class="mb-4">
+                    <label class="block text-slate-500 dark:text-slate-400 mb-2 text-sm">Algoritma</label>
+                    <select name="algorithm" id="sorting-select"
+                        class="w-full bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-slate-800 dark:text-white transition-colors">
+                        <option value="bubble" {% if selected_algorithm=='bubble' %}selected{% endif %}>Bubble Sort
+                        </option>
+                        <option value="selection" {% if selected_algorithm=='selection' %}selected{% endif %}>Selection
+                            Sort</option>
+                        <option value="insertion" {% if selected_algorithm=='insertion' %}selected{% endif %}>Insertion
+                            Sort</option>
+                        <option value="merge" {% if selected_algorithm=='merge' %}selected{% endif %}>Merge Sort
+                        </option>
+                        <option value="shell" {% if selected_algorithm=='shell' %}selected{% endif %}>Shell Sort
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-slate-500 dark:text-slate-400 mb-2 text-sm">Urutkan Berdasarkan</label>
+                    <select name="sort_key"
+                        class="w-full bg-white dark:bg-slate-900/50 border border-slate-300 dark:border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-slate-800 dark:text-white transition-colors">
+                        <option value="nama" {% if selected_key=='nama' %}selected{% endif %}>Nama</option>
+                        <option value="nim" {% if selected_key=='nim' %}selected{% endif %}>NIM</option>
+                        <option value="ipk" {% if selected_key=='ipk' %}selected{% endif %}>IPK</option>
+                    </select>
+                </div>
+
+                <div class="mb-6" id="sort-order-group">
+                    <label class="block text-slate-500 dark:text-slate-400 mb-2 text-sm">Urutan</label>
+                    <div class="flex gap-4">
+                        <label
+                            class="flex items-center text-slate-600 dark:text-slate-400 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            <input type="radio" name="sort_order" value="asc"
+                                class="mr-2 text-indigo-500 focus:ring-indigo-500" {% if not selected_order or
+                                selected_order=='asc' %}checked{% endif %}>
+                            Meningkat (ASC)
+                        </label>
+                        <label
+                            class="flex items-center text-slate-600 dark:text-slate-400 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            <input type="radio" name="sort_order" value="desc"
+                                class="mr-2 text-indigo-500 focus:ring-indigo-500" {% if selected_order=='desc'
+                                %}checked{% endif %}>
+                            Menurun (DESC)
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg transition shadow-lg shadow-indigo-500/20">
+                    Jalankan Pengurutan
+                </button>
+            </form>
+
+            <div class="mt-8">
+                <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Data Saat
+                    Ini ({{ students|length }})</h4>
+                <div
+                    class="bg-slate-100 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-white/5 p-2 max-h-60 overflow-y-auto text-xs font-mono">
+                    {% for student in students %}
+                    <div
+                        class="mb-1 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-white/5 pb-1">
+                        <span class="text-indigo-600 dark:text-indigo-400">{{ student.nim }}</span> - {{ student.nama }}
+                        [{{ student.ipk }}]
+                    </div>
+                    {% else %}
+                    <div class="text-slate-500 text-center py-4 italic">Tidak ada data. Tambahkan mahasiswa dahulu.
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="lg:col-span-2">
+        {% if error %}
+        <div
+            class="bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-200 p-4 rounded-xl mb-6 border border-red-200 dark:border-red-500/30">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if result %}
+        <div class="glass-panel p-6 rounded-2xl mb-6">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-4 flex items-center">
+                <span class="w-2 h-8 bg-green-500 rounded-full mr-3"></span>
+                Hasil Eksekusi
+            </h3>
+
+            <div class="grid grid-cols-2 display-gap gap-4 mb-6">
+                <div
+                    class="bg-white/60 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                    <span class="text-slate-500 dark:text-slate-400 text-xs uppercase block mb-1">Kompleksitas
+                        Waktu</span>
+                    <span class="text-xl font-mono text-purple-600 dark:text-purple-400 font-bold">{{ result.complexity
+                        }}</span>
+                </div>
+                <div
+                    class="bg-white/60 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                    <span class="text-slate-500 dark:text-slate-400 text-xs uppercase block mb-1">Waktu Eksekusi</span>
+                    <span class="text-xl font-mono text-blue-600 dark:text-blue-400 font-bold">{{ result.time_taken
+                        }}</span>
+                </div>
+                <div
+                    class="bg-white/60 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                    <span class="text-slate-500 dark:text-slate-400 text-xs uppercase block mb-1">Langkah/Operasi</span>
+                    <span class="text-xl font-mono text-pink-600 dark:text-pink-400 font-bold">{{ result.steps }}</span>
+                </div>
+            </div>
+
+            <div
+                class="bg-white/60 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm dark:shadow-none">
+                <span class="text-slate-500 dark:text-slate-400 text-xs uppercase block mb-2">Output Terurut</span>
+                <div
+                    class="font-mono text-xs text-slate-700 dark:text-slate-300 break-all leading-relaxed max-h-96 overflow-y-auto">
+                    {% for item in result.data %}
+                    <div class="mb-1 border-b border-slate-200 dark:border-white/5 pb-1">
+                        <span class="text-indigo-600 dark:text-indigo-400 font-semibold">{{ item.nim }}</span> - {{
+                        item.nama }} [IPK: {{ item.ipk }}]
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div
+            class="glass-panel p-12 rounded-2xl flex flex-col items-center justify-center text-center opacity-70 border-dashed border-2 border-slate-300 dark:border-slate-600">
+            <svg class="w-16 h-16 text-slate-400 dark:text-slate-600 mb-4" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                </path>
+            </svg>
+            <h3 class="text-xl font-bold text-slate-500 dark:text-slate-400">Siap Mengurutkan</h3>
+            <p class="text-slate-500 mt-2">Pilih algoritma dan kunci pengurutan untuk melihat hasilnya.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

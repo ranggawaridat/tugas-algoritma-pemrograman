@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-white">Direktori Mahasiswa</h1>
+    <a href="/students/add"
+        class="px-4 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg text-white font-medium hover:opacity-90 transition shadow-lg shadow-indigo-500/20">
+        + Tambah Mahasiswa
+    </a>
+</div>
+
+{% if import_error %}
+<div
+    class="bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-200 p-4 rounded-lg mb-6 border border-red-200 dark:border-red-500/30">
+    {{ import_error }}
+</div>
+{% endif %}
+
+<!-- Import/Export Toolbar -->
+<div class="glass-panel p-4 rounded-xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex gap-2 items-center">
+        <h3 class="text-sm font-medium text-slate-600 dark:text-gray-300 mr-2">Operasi Data:</h3>
+        <a href="/students/export"
+            class="text-sm px-3 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded text-slate-700 dark:text-white transition">Ekspor
+            CSV</a>
+    </div>
+    <form action="/students/import" method="post" enctype="multipart/form-data" class="flex gap-2 items-center">
+        <input type="file" name="file" accept=".csv" required
+            class="text-sm text-slate-500 dark:text-gray-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 dark:file:bg-primary/20 file:text-indigo-600 dark:file:text-primary hover:file:bg-indigo-100 dark:hover:file:bg-primary/30">
+        <button type="submit"
+            class="text-sm px-3 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded text-slate-700 dark:text-white transition">Impor</button>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="glass-panel rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr
+                    class="bg-slate-100/80 dark:bg-slate-900/40 text-slate-500 dark:text-gray-400 text-xs uppercase tracking-wider backdrop-blur-sm border-b border-slate-200 dark:border-white/5">
+                    <th class="p-4 font-semibold">NIM</th>
+                    <th class="p-4 font-semibold">Nama</th>
+                    <th class="p-4 font-semibold">Jurusan</th>
+                    <th class="p-4 font-semibold">IPK</th>
+                    <th class="p-4 text-right font-semibold">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 dark:divide-gray-700">
+                {% for student in students %}
+                <tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition duration-150">
+                    <td class="p-4 font-mono text-sm text-indigo-600 dark:text-indigo-400">{{ student.nim }}</td>
+                    <td class="p-4 font-medium text-slate-800 dark:text-white">{{ student.nama }}<br><span
+                            class="text-xs text-slate-500 dark:text-gray-500">{{
+                            student.email }}</span></td>
+                    <td class="p-4 text-slate-600 dark:text-gray-300">{{ student.jurusan }}</td>
+                    <td class="p-4">
+                        <span
+                            class="px-2 py-1 rounded text-xs font-bold {% if student.ipk >= 3.5 %}bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400{% elif student.ipk >= 3.0 %}bg-yellow-100 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400{% else %}bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400{% endif %}">
+                            {{ student.ipk }}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right space-x-2">
+                        <a href="/students/edit/{{ student.id }}"
+                            class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 text-sm font-medium">Edit</a>
+                        <a href="/students/delete/{{ student.id }}"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
+                            class="text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 text-sm font-medium">Hapus</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="p-8 text-center text-slate-500 dark:text-gray-500">Tidak ada data mahasiswa.
+                        Tambahkan satu untuk memulai.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Mahasiswa</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: "#4f46e5", // Indigo 600 - slightly darker for better light mode contrast
+                        secondary: "#9333ea", // Purple 600
+                        darkbg: "#0f172a", // Slate 900
+                        cardbg: "#1e293b", // Slate 800
+                        lightbg: "#f1f5f9", // Slate 100 - slightly darker than 50 for better card contrast
+                        lightcard: "#ffffff",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Glass Panel - Dark Mode */
+        html.dark .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Glass Panel - Light Mode - Improved for separation */
+        html:not(.dark) .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            /* More opaque */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            /* Slate 200 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #4f46e5, #9333ea, #db2777);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <script>
+        // Check local storage or system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+
+<body
+    class="antialiased min-h-screen flex flex-col md:flex-row bg-lightbg dark:bg-darkbg text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden flex justify-between items-center p-4 glass-panel sticky top-0 z-50">
+        <span class="text-xl font-bold gradient-text">Antigravity</span>
+        <button id="mobile-menu-btn"
+            class="text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside
+        class="w-full md:w-64 glass-panel flex-shrink-0 hidden md:flex flex-col h-screen sticky top-0 border-r border-slate-200 dark:border-white/10">
+        <div class="p-6 text-2xl font-bold tracking-tight">
+            <span class="gradient-text">SistemKampus</span>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="/dashboard"
+                class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {% if active_page == 'dashboard' %}bg-primary text-white shadow-lg shadow-primary/30{% else %}text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white{% endif %}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                    </path>
+                </svg>
+                Dasbor
+            </a>
+            <a href="/students"
+                class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {% if active_page == 'students' %}bg-primary text-white shadow-lg shadow-primary/30{% else %}text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white{% endif %}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                </svg>
+                Mahasiswa
+            </a>
+            <a href="/sorting"
+                class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {% if active_page == 'sorting' %}bg-primary text-white shadow-lg shadow-primary/30{% else %}text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white{% endif %}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+                </svg>
+                Pengurutan
+            </a>
+            <a href="/searching"
+                class="flex items-center px-4 py-3 rounded-lg transition-all duration-200 {% if active_page == 'searching' %}bg-primary text-white shadow-lg shadow-primary/30{% else %}text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white{% endif %}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                Pencarian
+            </a>
+        </nav>
+
+        <div class="p-4">
+            <button id="theme-toggle"
+                class="w-full mb-4 flex items-center justify-center space-x-2 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors text-sm text-slate-600 dark:text-slate-300 font-medium">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+                <span id="theme-toggle-text">Ganti Tema</span>
+            </button>
+
+            <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+                <div class="flex items-center mb-4 px-2">
+                    <div
+                        class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-sm text-white shadow-md">
+                        {{ user.nama[0] if user else 'T' }}
+                    </div>
+                    <div class="ml-3 overflow-hidden">
+                        <p class="text-sm font-medium text-slate-700 dark:text-white truncate">{{ user.nama if user else
+                            'Tamu' }}</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 truncate">{{ user.email if user else '' }}
+                        </p>
+                    </div>
+                </div>
+                <a href="/logout"
+                    class="block w-full text-center py-2 px-4 rounded-md border border-slate-300 dark:border-slate-600 hover:bg-red-500 hover:text-white hover:border-red-500 dark:hover:bg-red-500/20 dark:hover:text-red-300 transition-all text-sm text-slate-600 dark:text-slate-300 font-medium">
+                    Keluar
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        var themeToggleText = document.getElementById('theme-toggle-text');
+
+        // Change the icons inside the button based on previous settings
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+            themeToggleText.textContent = "Mode Terang";
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+            themeToggleText.textContent = "Mode Gelap";
+        }
+
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function () {
+
+            // toggle icons inside button
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // if set via local storage previously
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                    themeToggleText.textContent = "Mode Terang";
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                    themeToggleText.textContent = "Mode Gelap";
+                }
+
+                // if NOT set via local storage previously
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                    themeToggleText.textContent = "Mode Gelap";
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                    themeToggleText.textContent = "Mode Terang";
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

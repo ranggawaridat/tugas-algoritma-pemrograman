@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - Sistem Kampus</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: "#4f46e5",
+                        secondary: "#9333ea",
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-[#0f172a] transition-colors duration-300">
+    <!-- Back Button -->
+    <a href="/"
+        class="absolute top-6 left-6 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white transition-colors flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+        </svg>
+        Kembali
+    </a>
+
+    <div
+        class="w-full max-w-md p-8 rounded-3xl bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-2xl">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Selamat Datang</h2>
+            <p class="text-slate-500 dark:text-slate-400">Silakan masuk untuk melanjutkan</p>
+        </div>
+
+        {% if error %}
+        <div
+            class="bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-200 p-4 rounded-xl mb-6 text-center border border-red-200 dark:border-red-500/30 text-sm">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/login" method="post" class="space-y-5">
+            <div>
+                <label class="block text-slate-600 dark:text-gray-400 mb-2 text-sm font-medium">Alamat Email</label>
+                <input type="email" name="username" required
+                    class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-slate-800 dark:text-white placeholder-slate-400 transition-all">
+            </div>
+            <div>
+                <label class="block text-slate-600 dark:text-gray-400 mb-2 text-sm font-medium">Kata Sandi</label>
+                <input type="password" name="password" required
+                    class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-300 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-slate-800 dark:text-white placeholder-slate-400 transition-all">
+            </div>
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-indigo-500/20 transform hover:-translate-y-0.5">
+                Masuk
+            </button>
+        </form>
+        <div class="mt-8 text-center text-sm text-slate-500 dark:text-gray-500">
+            Belum punya akun? <a href="/register"
+                class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-semibold transition-colors">Daftar
+                Sekarang</a>
+        </div>
+    </div>
+</body>
+
+</html>
