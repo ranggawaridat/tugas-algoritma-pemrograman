@@ -19,6 +19,21 @@
                     colors: {
                         primary: "#4f46e5",
                         secondary: "#9333ea",
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
                     }
                 }
             }
@@ -45,6 +60,23 @@
         .hero-bg-light {
             background-image: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, rgba(255, 255, 255, 0) 60%);
         }
+
+        /* Animation Delays */
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+
+        .delay-300 {
+            animation-delay: 300ms;
+        }
+
+        .delay-500 {
+            animation-delay: 500ms;
+        }
     </style>
 </head>
 
@@ -52,9 +84,9 @@
     class="flex flex-col min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-white transition-colors duration-300 relative overflow-x-hidden">
 
     <!-- Background Gradient -->
-    <div class="absolute inset-0 pointer-events-none hero-bg-light dark:hero-bg-dark z-0"></div>
+    <div class="absolute inset-0 pointer-events-none hero-bg-light dark:hero-bg-dark z-0 animate-pulse-slow"></div>
 
-    <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto w-full relative z-10">
+    <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto w-full relative z-10 animate-fade-in-up">
         <div
             class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
             SistemKampus
@@ -79,42 +111,38 @@
     </nav>
 
     <main class="flex-1 flex flex-col justify-center items-center text-center px-4 relative z-10">
-        <!--
-        <div
-            class="inline-flex items-center px-3 py-1 rounded-full border border-indigo-200 dark:border-indigo-500/30 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 text-xs font-semibold tracking-wide uppercase mb-6">
-             Versi Premium 2.0
-        </div>
-        -->
         <br>
         <br>
         <h1
-            class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-slate-900 dark:text-white leading-tight">
+            class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-slate-900 dark:text-white leading-tight opacity-0 animate-fade-in-up delay-100">
             Kelola Data Mahasiswa <br>
             <span
                 class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400">Dengan
                 Presisi Tinggi</span>
         </h1>
-        <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mb-10 leading-relaxed">
+        <p
+            class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mb-10 leading-relaxed opacity-0 animate-fade-in-up delay-200">
             Platform manajemen data mahasiswa modern yang dilengkapi dengan analisis algoritma cerdas.
             Rasakan kecepatan, keamanan data, dan antarmuka yang elegan dalam satu sistem.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto opacity-0 animate-fade-in-up delay-300">
             <a href="/login"
-                class="px-8 py-4 rounded-full bg-indigo-600 text-lg font-bold text-white hover:bg-indigo-500 transition shadow-xl shadow-indigo-500/20 transform hover:-translate-y-1">
-                Buka Dasbor
+                class="px-8 py-4 rounded-full bg-indigo-600 text-lg font-bold text-white hover:bg-indigo-500 transition shadow-xl shadow-indigo-500/20 transform hover:-translate-y-1 hover:scale-105 duration-200">
+                Masuk
             </a>
-            <a href="#"
-                class="px-8 py-4 rounded-full bg-white dark:bg-white/5 text-lg font-bold text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-white/10 transition border border-slate-200 dark:border-white/10 shadow-sm">
+            <!-- <a href="#"
+                class="px-8 py-4 rounded-full bg-white dark:bg-white/5 text-lg font-bold text-slate-700 dark:text-white hover:bg-slate-50 dark:hover:bg-white/10 transition border border-slate-200 dark:border-white/10 shadow-sm transform hover:-translate-y-1 hover:scale-105 duration-200">
                 Pelajari Fitur
-            </a>
+            </a> -->
         </div>
 
         <!-- Stats preview -->
-        <div class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+        <div
+            class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl opacity-0 animate-fade-in-up delay-500">
             <div
-                class="p-8 rounded-3xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 backdrop-blur-md shadow-xl dark:shadow-none hover:border-indigo-500/30 transition-colors">
+                class="p-8 rounded-3xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 backdrop-blur-md shadow-xl dark:shadow-none hover:border-indigo-500/30 transition-all duration-300 hover:transform hover:-translate-y-2 group">
                 <div
-                    class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center mb-4 mx-auto text-indigo-600 dark:text-indigo-400">
+                    class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center mb-4 mx-auto text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -125,9 +153,9 @@
                     respons instan.</div>
             </div>
             <div
-                class="p-8 rounded-3xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 backdrop-blur-md shadow-xl dark:shadow-none hover:border-purple-500/30 transition-colors">
+                class="p-8 rounded-3xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 backdrop-blur-md shadow-xl dark:shadow-none hover:border-purple-500/30 transition-all duration-300 hover:transform hover:-translate-y-2 group">
                 <div
-                    class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center mb-4 mx-auto text-purple-600 dark:text-purple-400">
+                    class="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center mb-4 mx-auto text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
@@ -139,9 +167,9 @@
                     yang teroptimasi.</div>
             </div>
             <div
-                class="p-8 rounded-3xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 backdrop-blur-md shadow-xl dark:shadow-none hover:border-pink-500/30 transition-colors">
+                class="p-8 rounded-3xl bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/5 backdrop-blur-md shadow-xl dark:shadow-none hover:border-pink-500/30 transition-all duration-300 hover:transform hover:-translate-y-2 group">
                 <div
-                    class="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-500/20 flex items-center justify-center mb-4 mx-auto text-pink-600 dark:text-pink-400">
+                    class="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-500/20 flex items-center justify-center mb-4 mx-auto text-pink-600 dark:text-pink-400 group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
@@ -155,7 +183,8 @@
         </div>
     </main>
 
-    <footer class="p-8 text-center text-slate-500 dark:text-slate-600 text-sm relative z-10">
+    <footer
+        class="p-8 text-center text-slate-500 dark:text-slate-600 text-sm relative z-10 animate-fade-in-up delay-500">
         &copy; 2025 Rangga Waridat
     </footer>
 
