@@ -4,53 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {# SEO: title and description can be overridden by child templates via blocks or variables #}
-    <title>{% block title %}Sistem Manajemen Mahasiswa{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}A simple student management system for managing student data and algorithms playground.{% endblock %}">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ request.url }}">
-
-    {# Open Graph / Social #}
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="{% block og_title %}Sistem Manajemen Mahasiswa{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}A simple student management system for managing student data and algorithms playground.{% endblock %}">
-    <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:locale" content="id_ID">
-    <meta property="og:site_name" content="SistemKampus">
-    <meta property="og:image" content="{{ request.base_url.scheme }}://{{ request.base_url.hostname }}{% if request.base_url.port %}:{{ request.base_url.port }}{% endif %}/static/og-image.png">
-
-    {# Twitter Card #}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}Sistem Manajemen Mahasiswa{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}A simple student management system for managing student data and algorithms playground.{% endblock %}">
-    <meta name="twitter:image" content="/static/og-image.png">
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "WebSite",
-                    "@id": "{{ request.base_url }}#website",
-                    "url": "{{ request.base_url }}",
-                    "name": "SistemKampus",
-                    "description": "{% block meta_description %}A simple student management system for managing student data and algorithms playground.{% endblock %}",
-                    "potentialAction": {
-                        "@type": "SearchAction",
-                        "target": "{{ request.base_url }}search?q={search_term_string}",
-                        "query-input": "required name=search_term_string"
-                    }
-                },
-                {
-                    "@type": "Organization",
-                    "@id": "{{ request.base_url }}#organization",
-                    "name": "SistemKampus",
-                    "url": "{{ request.base_url }}",
-                    "logo": "{{ request.base_url }}static/favicon.svg"
-                }
-            ]
-        }
-        </script>
-    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+    <title>Sistem Manajemen Mahasiswa</title>
+    <link rel="icon" href="/static/icon.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
