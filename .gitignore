@@ -12,9 +12,6 @@ env/
 .vscode/
 .idea/
 
-# Local Data (Optional: uncomment if you don't want to commit data)
-# data/mahasiswa.json
-
 # OS
 .DS_Store
 Thumbs.db
